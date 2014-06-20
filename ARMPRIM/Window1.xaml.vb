@@ -81,6 +81,8 @@ trataerro:
         MsgBox("Erro: " & Err.Number & " - " & Err.Description)
     End Sub
 
+
+
     Public Sub actualizar_Entradas()
         On Error GoTo trataerro
         'Declare the query
@@ -283,7 +285,6 @@ trataerro:
 
                 motor.Comercial.Stocks.Actualiza(DocS)
 
-
                 objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
 
                 objmotor.Comercial.Vendas.ActualizaValorAtributo("000", tipodoc, serie, numdoc, "Cdu_StkId", DocS.ID)
@@ -478,6 +479,26 @@ TrataErro:
 
     Private Sub anular_Click_1(sender As Object, e As RoutedEventArgs)
 
+        Dim dv As DataView
+        Dim i As Integer
+        dv = dgEntrada_Resultados.ItemsSource
+
+
+
+        If (dgEntrada_Resultados.Items.Count > 0) Then
+
+            For i = 0 To (dgEntrada_Resultados.Items.Count - 1)
+                Dim selectedFile As System.Data.DataRowView
+                selectedFile = dgEntrada_Resultados.Items(i)
+                If (Convert.ToBoolean(selectedFile.Row.ItemArray(2))) Then
+                    AnulardocSaidas(Convert.ToString(dv.Item(i).Row("Id")), Convert.ToString(dv.Item(i).Row("CabecStock")), "Vendas")
+                End If
+            Next i
+
+            MsgBox("Documento Criado com Sucesso")
+
+            actualizar_Compras()
+        End If
     End Sub
 
     Private Sub actualizarCompras_Click(sender As Object, e As RoutedEventArgs)
@@ -556,4 +577,41 @@ Erro:
 trataerro:
         MsgBox("Erro: " & Err.Number & " - " & Err.Description)
     End Sub
+
+    Private Sub AnulardocSaidas(id As String, idStock As String, tipo As String)
+        Dim objLista As StdBELista
+        Dim objLista2 As StdBELista
+
+        'Dim impressao As StdPlatBS
+        Dim objmotor2 As New ErpBS
+        
+        Dim strSQl As String
+
+        Dim objmotor As New ErpBS
+        Dim empresa As String
+
+        strSQl = vbNullString
+        strSQl = strSQl & "SELECT * FROM View_Stock_Facturacao_Int where Id='" & id & "'"
+        objLista = motor.Consulta(strSQl)
+
+        empresa = vbNullString
+        If Not (objLista Is Nothing) Then
+            empresa = objLista.Valor("BasedeDados")
+            objmotor2.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
+
+            objmotor2.Comercial.Vendas.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_StkId", "")
+        End If
+
+        strSQl = vbNullString
+        strSQl = strSQl & "SELECT * FROM CabecSTK where CDU_Idstk='" & id & "'"
+        objLista2 = motor.Consulta(strSQl)
+
+        If Not (objLista2 Is Nothing) Then
+
+            motor.Comercial.Stocks.Remove(objLista2.Valor("Filial"), "S", objLista2.Valor("TipoDoc"), objLista2.Valor("Serie"), Conversion.Int(objLista2.Valor("NumDoc")))
+
+        End If
+
+    End Sub
+
 End Class
