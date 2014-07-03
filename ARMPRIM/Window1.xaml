@@ -95,7 +95,7 @@
                                                     <ColumnDefinition Width="26*"/>
                                                     <ColumnDefinition Width="991*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Button HorizontalAlignment="Left" Margin="81.194,16,0,0" VerticalAlignment="Top" Width="75" Click="anular_Click_1" Grid.Column="1">
+                                                <Button x:Name="btAnular1" HorizontalAlignment="Left" Margin="81.194,16,0,0" VerticalAlignment="Top" Width="75" Click="anular_Click_1" Grid.Column="1"  IsEnabled="False">
                                                     <StackPanel>
                                                         <Image Source="Resources/transferir.jpg" Height="37" Width="41" />
                                                         <TextBlock><Run Text="Anular"/></TextBlock>
@@ -243,7 +243,7 @@
                                                     <ColumnDefinition Width="983*"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <Button HorizontalAlignment="Left" Margin="81,16,0,0" VerticalAlignment="Top" Width="75" Click="anular_Click_1" Grid.Column="1" Grid.ColumnSpan="3">
+                                                <Button x:Name="btAnular2" HorizontalAlignment="Left" Margin="81,16,0,0" VerticalAlignment="Top" Width="75" Click="anular_Click_1" Grid.Column="1" Grid.ColumnSpan="3" IsEnabled="False">
                                                     <StackPanel>
                                                         <Image Source="Resources/transferir.jpg" Height="37" Width="41" />
                                                         <TextBlock><Run Text="Anular"/></TextBlock>

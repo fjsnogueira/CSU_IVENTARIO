@@ -36,6 +36,12 @@ trataerro:
         motor = erpmotor
         connectionString = connection
 
+        If motor.Contexto.UtilizadorActual.ToLower = "Solly Asspi".ToLower Then
+            btAnular1.IsEnabled = True
+            btAnular2.IsEnabled = True
+        End If
+
+
         myConnection = New SqlConnection(connectionString)
 
         'Declare the query
@@ -481,7 +487,7 @@ TrataErro:
                 Dim selectedFile As System.Data.DataRowView
                 selectedFile = dgEntrada_Resultados.Items(i)
                 If (Convert.ToBoolean(selectedFile.Row.ItemArray(2))) Then
-                    AnulardocSaidas(Convert.ToString(dv.Item(i).Row("Id")), Convert.ToString(dv.Item(i).Row("CabecStock")), "Vendas")
+                    AnulardocSaidas(Convert.ToString(dv.Item(i).Row("Id")), Convert.ToString(dv.Item(i).Row("CabecStock")))
                 End If
             Next i
 
@@ -569,7 +575,14 @@ trataerro:
         MsgBox("Erro: " & Err.Number & " - " & Err.Description)
     End Sub
 
-    Private Sub AnulardocSaidas(id As String, idStock As String, tipo As String)
+    ''' <summary>
+    ''' Anular documentos sincronizados
+    ''' </summary>
+    ''' <param name="id">id na view de sincronização</param>
+    ''' <param name="idStock">id gerado poz sincronização</param>
+    ''' <remarks></remarks>
+
+    Private Sub AnulardocSaidas(id As String, idStock As String)
         Dim objLista As StdBELista
         Dim objLista2 As StdBELista
 
@@ -580,6 +593,9 @@ trataerro:
 
         Dim objmotor As New ErpBS
         Dim empresa As String
+        Dim tipo As String
+        Dim continua As Boolean
+        continua = False
 
         strSQl = vbNullString
         strSQl = strSQl & "SELECT * FROM View_Stock_Facturacao_Int where Id='" & id & "'"
@@ -588,20 +604,42 @@ trataerro:
         empresa = vbNullString
         If Not (objLista Is Nothing) Then
             empresa = objLista.Valor("BasedeDados")
+            tipo = objLista.Valor("tipo")
+
             objmotor2.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
 
-            objmotor2.Comercial.Vendas.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_StkId", "")
+            If tipo = "Stock" Then
+                objmotor2.Comercial.Stocks.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_StkId", "")
+                continua = True
+            End If
+
+            If tipo = "Vendas" Then
+                objmotor2.Comercial.Vendas.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_StkId", "")
+                continua = True
+            End If
+
+            If tipo = "Compras" Then
+                objmotor2.Comercial.Compras.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_StkId", "")
+                continua = True
+            End If
+
+            If continua = True Then
+                strSQl = vbNullString
+                strSQl = strSQl & "SELECT * FROM CabecSTK where CDU_Idstk='" & id & "'"
+                objLista2 = motor.Consulta(strSQl)
+
+                If Not (objLista2 Is Nothing) Then
+
+                    motor.Comercial.Stocks.Remove(objLista2.Valor("Filial"), "S", objLista2.Valor("TipoDoc"), objLista2.Valor("Serie"), Conversion.Int(objLista2.Valor("NumDoc")))
+
+                End If
+            End If
         End If
 
-        strSQl = vbNullString
-        strSQl = strSQl & "SELECT * FROM CabecSTK where CDU_Idstk='" & id & "'"
-        objLista2 = motor.Consulta(strSQl)
-
-        If Not (objLista2 Is Nothing) Then
-
-            motor.Comercial.Stocks.Remove(objLista2.Valor("Filial"), "S", objLista2.Valor("TipoDoc"), objLista2.Valor("Serie"), Conversion.Int(objLista2.Valor("NumDoc")))
-
+        If continua = False Then
+            MsgBox("Ocorreu um erro durante a transação")
         End If
+
 
     End Sub
 End Class
