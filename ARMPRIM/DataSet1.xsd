@@ -36,6 +36,9 @@
               <xs:element name="Data" msprop:Generator_ColumnVarNameInTable="columnData" msprop:Generator_ColumnPropNameInRow="Data" msprop:Generator_ColumnPropNameInTable="DataColumn" msprop:Generator_UserColumnName="Data" type="xs:dateTime" minOccurs="0" />
               <xs:element name="Totaldoc" msprop:Generator_ColumnVarNameInTable="columnTotaldoc" msprop:Generator_ColumnPropNameInRow="Totaldoc" msprop:Generator_ColumnPropNameInTable="TotaldocColumn" msprop:Generator_UserColumnName="Totaldoc" type="xs:decimal" minOccurs="0" />
               <xs:element name="CabecStock_x0020_" msprop:Generator_ColumnVarNameInTable="columnCabecStock_" msprop:Generator_ColumnPropNameInRow="CabecStock_" msprop:Generator_ColumnPropNameInTable="CabecStock_Column" msprop:Generator_UserColumnName="CabecStock " type="xs:string" minOccurs="0" />
+              <xs:element name="TipoDoc" msprop:Generator_ColumnVarNameInTable="columnTipoDoc" msprop:Generator_ColumnPropNameInRow="TipoDoc" msprop:Generator_ColumnPropNameInTable="TipoDocColumn" msprop:Generator_UserColumnName="TipoDoc" type="xs:string" minOccurs="0" />
+              <xs:element name="Serie" msprop:Generator_ColumnVarNameInTable="columnSerie" msprop:Generator_ColumnPropNameInRow="Serie" msprop:Generator_ColumnPropNameInTable="SerieColumn" msprop:Generator_UserColumnName="Serie" type="xs:string" minOccurs="0" />
+              <xs:element name="NumDoc" msprop:Generator_ColumnVarNameInTable="columnNumDoc" msprop:Generator_ColumnPropNameInRow="NumDoc" msprop:Generator_ColumnPropNameInTable="NumDocColumn" msprop:Generator_UserColumnName="NumDoc" type="xs:long" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

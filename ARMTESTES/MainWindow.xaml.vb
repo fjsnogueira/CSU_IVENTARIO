@@ -14,16 +14,16 @@ Class MainWindow
         Dim strSelFormula As String
         Dim connection As String
 
-        objmotor.AbreEmpresaTrabalho(EnumTipoPlataforma.tpProfissional, "BDARM", "multisector", "msmz2012!")
+        objmotor.AbreEmpresaTrabalho(EnumTipoPlataforma.tpEmpresarial, "BDARM", "accsys", "accsys2011")
 
-        connection = "Data Source=MAHOTAG\SQLEXPRESS;Initial Catalog= PRIBDARM;User Id= sa;Password=msmz2012!"
+        connection = "Data Source=PRIMAVERASOFT\LE810R2;Initial Catalog= PRIBDARM;User Id= sa;Password=Accsys2011"
 
         objConfPlat = New StdBSConfApl
 
         objConfPlat.AbvtApl = "GCP"
         objConfPlat.Instancia = "DEFAULT"
-        objConfPlat.Utilizador = "multisector"
-        objConfPlat.PwdUtilizador = "msmz2012!"
+        objConfPlat.Utilizador = "accsys"
+        objConfPlat.PwdUtilizador = "accsys2011"
 
         Dim objTrans As StdBETransaccao
         objTrans = New StdBETransaccao
