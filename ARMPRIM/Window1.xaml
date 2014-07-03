@@ -21,7 +21,7 @@
                         </Grid.ColumnDefinitions>
                         <TabControl Grid.ColumnSpan="3" Margin="0,0,10,0">
                             <TabItem Header="Dados  a Sincronizar" Height="22" VerticalAlignment="Bottom">
-                                <TabControl Margin="0,0,-49,0">
+                                <TabControl Margin="0,10,-49,0">
                                     <TabItem Header="Documentos">
                                         <Grid Background="#FFE5E5E5">
                                             <Grid.ColumnDefinitions>
@@ -38,7 +38,7 @@
                                                     <DataGridTextColumn Binding="{Binding Nome}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="300" Header="Entidade"/>
 
                                                     <DataGridTextColumn Binding="{Binding Totaldoc, StringFormat='{}{0:n}'}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="75" Header="Total"/>
-                                                    
+
 
                                                 </DataGrid.Columns>
 
@@ -66,6 +66,7 @@
                                                     <TextBlock><Run Text="Actualizar"/></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <Label Content="Documentos de Saida - A Sincronizar" HorizontalAlignment="Left" Margin="210,0,0,0" VerticalAlignment="Top" Width="614" FontSize="25" FontWeight="Bold" Grid.Column="1"/>
 
                                         </Grid>
                                     </TabItem>
@@ -113,7 +114,7 @@
                                                         <TextBlock><Run Text="Imprimir"/></TextBlock>
                                                     </StackPanel>
                                                 </Button>
-                                                <DataGrid x:Name="dgEntrada_Resultados" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Height="354" Width="682" AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="False" Grid.ColumnSpan="2">
+                                                <DataGrid x:Name="dgEntrada_Resultados" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Height="354" Width="672" AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="False" Grid.ColumnSpan="2">
                                                     <DataGrid.Columns>
                                                         <DataGridCheckBoxColumn Binding="{Binding IsSelected}" ClipboardContentBinding="{x:Null}" Width="35" Header="AC"/>
                                                         <DataGridTextColumn Binding="{Binding Data, StringFormat='dd-MM-yyyy'}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="75" Header="Data"/>
@@ -125,6 +126,19 @@
                                                     </DataGrid.Columns>
 
                                                 </DataGrid>
+
+                                                <DataGrid x:Name="dgLinhasResultadosEntrada" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Left" Margin="653,99,0,0" VerticalAlignment="Top" Height="354" Width="610" Grid.Column="1">
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Binding="{Binding Artigo}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="75" Header="Artigo"/>
+                                                        <DataGridTextColumn Binding="{Binding Descricao}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="125" Header="Descricao"/>
+
+                                                        <DataGridTextColumn Binding="{Binding Armazem}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="75" Header="Armazem"/>
+
+                                                        <DataGridTextColumn Binding="{Binding Quantidade, StringFormat='{}{0:n}'}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="100" Header="Quantidade"/>
+                                                        <DataGridTextColumn Binding="{Binding PrecUnit, StringFormat='{}{0:n}'}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="100" Header="Preço Unitario"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                                <Label Content="Documentos de Saida - Documentos Gerados" Grid.Column="1" HorizontalAlignment="Left" Margin="371,10,0,0" VerticalAlignment="Top" Width="614" FontSize="25" FontWeight="Bold"/>
 
                                             </Grid>
 
@@ -183,7 +197,7 @@
                                                     <DataGridTextColumn Binding="{Binding Nome}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="300" Header="Entidade"/>
 
                                                     <DataGridTextColumn Binding="{Binding Totaldoc, StringFormat='{}{0:n}'}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="75" Header="Total"/>
-                                                 
+
 
                                                 </DataGrid.Columns>
 
@@ -211,6 +225,7 @@
                                                     <TextBlock><Run Text="Actualizar"/></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <Label Content="Documentos de Entrada - A Sincronizar" HorizontalAlignment="Left" Margin="405,0,0,0" VerticalAlignment="Top" Width="614" FontSize="25" FontWeight="Bold"/>
 
                                         </Grid>
                                     </TabItem>
@@ -225,10 +240,10 @@
                                         </Grid>
                                     </TabItem>
                                 </TabControl>
-                                
-                                
+
+
                             </TabItem>
-                            
+
 
                             <TabItem Header="Documentos Gerados">
                                 <Grid Background="#FFE5E5E5">
@@ -262,6 +277,19 @@
                                                     </StackPanel>
                                                 </Button>
 
+                                                <DataGrid x:Name="dgLinhasResultadosEntrada2" AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" HorizontalAlignment="Left" Margin="523,99,0,0" VerticalAlignment="Top" Height="354" Width="610" Grid.Column="3">
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Binding="{Binding Artigo}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="75" Header="Artigo"/>
+                                                        <DataGridTextColumn Binding="{Binding Descricao}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="125" Header="Descricao"/>
+
+                                                        <DataGridTextColumn Binding="{Binding Armazem}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="75" Header="Armazem"/>
+
+                                                        <DataGridTextColumn Binding="{Binding Quantidade, StringFormat='{}{0:n}'}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="100" Header="Quantidade"/>
+                                                        <DataGridTextColumn Binding="{Binding PrecUnit, StringFormat='{}{0:n}'}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="100" Header="Preço Unitario"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+
+
                                                 <DataGrid x:Name="dgEntrada_Resultados2" HorizontalAlignment="Left" Margin="10,99,0,0" VerticalAlignment="Top" Height="354" Width="662" AutoGenerateColumns="False" CanUserAddRows="False"  CanUserDeleteRows="False" Grid.ColumnSpan="4">
                                                     <DataGrid.Columns>
                                                         <DataGridCheckBoxColumn Binding="{Binding IsSelected}" ClipboardContentBinding="{x:Null}" Width="35" Header="AC"/>
@@ -274,6 +302,8 @@
                                                     </DataGrid.Columns>
 
                                                 </DataGrid>
+                                                <Label Content="Documentos de Entrada - Documentos Gerados" Grid.Column="3" HorizontalAlignment="Left" Margin="251,0,0,0" VerticalAlignment="Top" Width="614" FontSize="25" FontWeight="Bold"/>
+
 
                                             </Grid>
 
@@ -289,8 +319,8 @@
                                                     <Label Content="Data Final:" HorizontalAlignment="Left" Margin="50,93,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.395,2.001"/>
 
                                                 </Grid>
-                                            </StackPanel> 
-                                            
+                                            </StackPanel>
+
                                         </TabItem>
 
                                     </TabControl>

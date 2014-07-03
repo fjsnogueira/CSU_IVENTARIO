@@ -609,17 +609,17 @@ trataerro:
             objmotor2.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
 
             If tipo = "Stock" Then
-                objmotor2.Comercial.Stocks.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_StkId", "")
+                objmotor2.Comercial.Stocks.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_Idstk", "")
                 continua = True
             End If
 
             If tipo = "Vendas" Then
-                objmotor2.Comercial.Vendas.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_StkId", "")
+                objmotor2.Comercial.Vendas.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_Idstk", "")
                 continua = True
             End If
 
             If tipo = "Compras" Then
-                objmotor2.Comercial.Compras.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_StkId", "")
+                objmotor2.Comercial.Compras.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_Idstk", "")
                 continua = True
             End If
 
@@ -641,5 +641,59 @@ trataerro:
         End If
 
 
+    End Sub
+
+    Private Sub dgEntrada_SelectionResultadosChanged(sender As Object, e As SelectionChangedEventArgs) Handles dgEntrada_Resultados.SelectionChanged
+        On Error GoTo trataerro
+
+        Dim selectedFile As System.Data.DataRowView
+        selectedFile = dgEntrada_Resultados.Items(dgEntrada_Resultados.SelectedIndex)
+
+
+        'Declare the query
+        Dim str_query As String = "select distinct(vs.Id), ls.Artigo,ls.PrecUnit,ls.Descricao,ls.Armazem,ls.Quantidade " + _
+                        "from View_Stock_Facturacao_Int vs inner join CabecSTK cb on  cb.CDU_Idstk = vs.Id inner " + _
+                        "join LinhasSTK ls on ls.IdCabecOrig = cb.Id where vs.id = '" + selectedFile.Row.ItemArray(0) + "'"
+
+        'str_query = "select * from artigo"
+        myCommand = New SqlCommand(str_query, myConnection)
+        'myConnection.Open()
+        'MessageBox.Show(myCommand.ExecuteScalar().ToString())
+        myAdapter = New SqlDataAdapter(myCommand)
+        myAdapter.MissingSchemaAction = MissingSchemaAction.AddWithKey
+        Dim ds As New DataSet1()
+        myAdapter.Fill(ds, "Linhas_Doc")
+        dgLinhasResultadosEntrada.ItemsSource = ds.Tables("Linhas_Doc").DefaultView
+
+        Exit Sub
+trataerro:
+        ' MsgBox("Erro: " & Err.Number & " - " & Err.Description)
+
+    End Sub
+
+    Private Sub dgEntrada_Resultados2_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles dgEntrada_Resultados2.SelectionChanged
+        On Error GoTo trataerro
+
+        Dim selectedFile As System.Data.DataRowView
+        selectedFile = dgEntrada_Resultados2.Items(dgEntrada_Resultados2.SelectedIndex)
+
+        'Declare the query
+        Dim str_query As String = "select distinct(vs.Id), ls.Artigo,ls.PrecUnit,ls.Descricao,ls.Armazem,ls.Quantidade " + _
+                        "from View_Stock_Facturacao_Int vs inner join CabecSTK cb on  cb.CDU_Idstk = vs.Id inner " + _
+                        "join LinhasSTK ls on ls.IdCabecOrig = cb.Id where vs.id = '" + selectedFile.Row.ItemArray(0) + "'"
+
+        'str_query = "select * from artigo"
+        myCommand = New SqlCommand(str_query, myConnection)
+        'myConnection.Open()
+        'MessageBox.Show(myCommand.ExecuteScalar().ToString())
+        myAdapter = New SqlDataAdapter(myCommand)
+        myAdapter.MissingSchemaAction = MissingSchemaAction.AddWithKey
+        Dim ds As New DataSet1()
+        myAdapter.Fill(ds, "Linhas_Doc")
+        dgLinhasResultadosEntrada2.ItemsSource = ds.Tables("Linhas_Doc").DefaultView
+
+        Exit Sub
+trataerro:
+        'MsgBox("Erro: " & Err.Number & " - " & Err.Description)
     End Sub
 End Class
