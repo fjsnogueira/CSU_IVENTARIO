@@ -264,7 +264,6 @@ trataerro:
 
             Empresa = objLista.Valor("BasedeDados")
 
-
             Select Case objLista.Valor("TipoDoc")
                 Case "FA" Or "VD" Or "ND" Or "GS"
                     If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
@@ -278,7 +277,7 @@ trataerro:
                     DocS.Tipodoc = "DC"
                 Case "VFA"
                     DocS.Tipodoc = "ESA"
-                Case "QB" Or "TS" Or "TE" Or "TEA" Or "TSA"
+                Case "QB" Or "TS" Or "TE" Or "TEA" Or "TSA" Or "SI"
                     DocS.Tipodoc = objLista.Valor("TipoDoc")
             End Select
 
@@ -322,8 +321,7 @@ trataerro:
                     objmotor.Comercial.Compras.ActualizaValorAtributo(tipodoc, numdoc, serie, "000", "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
                     objmotor.FechaEmpresaTrabalho()
 
-                End If
-
+            End If
 
                 If tipo = "Stock" Then
 
