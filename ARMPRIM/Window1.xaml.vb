@@ -264,94 +264,76 @@ trataerro:
 
             Empresa = objLista.Valor("BasedeDados")
 
-            If (objLista.Valor("TipoDoc") = ("DI") Or objLista.Valor("TipoDoc") = ("DI1") Or objLista.Valor("TipoDoc") = ("GS")) Then
-                DocS.Tipodoc = "SS"
+
+            Select Case objLista.Valor("TipoDoc")
+                Case "FA" Or "VD" Or "ND" Or "GS"
+                    If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
+                Case "NC" Or "DV"
+                    DocS.Tipodoc = "DS"
+                Case "NCA" Or "DVA"
+                    DocS.Tipodoc = "DSA"
+                Case "VD" Or "VF"
+                    If objLista.Valor("Modulo") = "C" Then DocS.Tipodoc = "ES"
+                Case "Vc" Or "VNC"
+                    DocS.Tipodoc = "DC"
+                Case "VFA"
+                    DocS.Tipodoc = "ESA"
+                Case "QB" Or "TS" Or "TE" Or "TEA" Or "TSA"
+                    DocS.Tipodoc = objLista.Valor("TipoDoc")
+            End Select
+
+                DocS.Serie = objLista.Valor("Serie")
+                DocS.CamposUtil("CDU_Idstk").Valor = id
+
+                DocS.TipoEntidade = objLista.Valor("TipoEntidade")
+                DocS.Entidade = objLista.Valor("Entidade")
+
+                motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
+
+
+
+                While Not (objLista.NoInicio Or objLista.NoFim)
+
+
+                    motor.Comercial.Stocks.AdicionaLinha(DocS, objLista.Valor("Artigo"), objLista.Valor("EntradaSaida"), objLista.Valor("Quantidade"), objLista.Valor("Armazem"), objLista.Valor("PrecUnit"), , , objLista.Valor("Localizacao"))
+
+                    'Item seguinte da lista
+                    objLista.Seguinte()
+
+                End While
+
+                motor.Comercial.Stocks.Actualiza(DocS)
+
+
+                If tipo = "Vendas" Then
+
+
+                    objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
+                    objmotor.Comercial.Vendas.ActualizaValorAtributo("000", tipodoc, serie, numdoc, "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
+                    objmotor.FechaEmpresaTrabalho()
+
+                End If
+
+
+                If tipo = "Compras" Then
+
+
+                    objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
+                    objmotor.Comercial.Compras.ActualizaValorAtributo(tipodoc, numdoc, serie, "000", "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
+                    objmotor.FechaEmpresaTrabalho()
+
+                End If
+
+
+                If tipo = "Stock" Then
+
+
+                    objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
+                    objmotor.Comercial.Stocks.ActualizaValorAtributo(tipodoc, numdoc, "000", serie, "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
+                    objmotor.FechaEmpresaTrabalho()
+
+                End If
             End If
-
-            If (objLista.Valor("TipoDoc") = ("FA") Or objLista.Valor("TipoDoc") = ("VD") Or objLista.Valor("TipoDoc") = ("GSA")) Then
-                DocS.Tipodoc = "SSA"
-            End If
-
-            If (objLista.Valor("TipoDoc") = ("VC")) Then
-                DocS.Tipodoc = "DC"
-            End If
-
-            If (objLista.Valor("TipoDoc") = ("VCA")) Then
-                DocS.Tipodoc = "DCA"
-            End If
-
-            If (objLista.Valor("TipoDoc") = ("NC") Or objLista.Valor("TipoDoc") = ("DV")) Then
-                DocS.Tipodoc = "DS"
-            End If
-
-            If (objLista.Valor("TipoDoc") = ("NCA") Or objLista.Valor("TipoDoc") = ("DVA")) Then
-                DocS.Tipodoc = "DSA"
-            End If
-
-            If (objLista.Valor("TipoDoc") = ("VF")) Then
-                DocS.Tipodoc = "ES"
-            End If
-
-            If (objLista.Valor("TipoDoc") = ("VFA")) Then
-                DocS.Tipodoc = "ESA"
-            End If
-
-            If (objLista.Valor("TipoDoc") = ("QB") Or objLista.Valor("TipoDoc") = ("TS") Or objLista.Valor("TipoDoc") = ("TE") Or objLista.Valor("TipoDoc") = ("TEA") Or objLista.Valor("TipoDoc") = ("TSA")) Then
-                DocS.Tipodoc = objLista.Valor("TipoDoc")
-            End If
-
-            DocS.Serie = objLista.Valor("Serie")
-            DocS.CamposUtil("CDU_Idstk").Valor = id
-
-            DocS.TipoEntidade = objLista.Valor("TipoEntidade")
-            DocS.Entidade = objLista.Valor("Entidade")
-
-            motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
-
-
-
-            While Not (objLista.NoInicio Or objLista.NoFim)
-
-
-                motor.Comercial.Stocks.AdicionaLinha(DocS, objLista.Valor("Artigo"), objLista.Valor("EntradaSaida"), objLista.Valor("Quantidade"), objLista.Valor("Armazem"), objLista.Valor("PrecUnit"), , , objLista.Valor("Localizacao"))
-
-                'Item seguinte da lista
-                objLista.Seguinte()
-
-            End While
-
-            motor.Comercial.Stocks.Actualiza(DocS)
-
-
-            If tipo = "Vendas" Then
-
-
-                objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
-                objmotor.Comercial.Vendas.ActualizaValorAtributo("000", tipodoc, serie, numdoc, "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
-                objmotor.FechaEmpresaTrabalho()
-
-            End If
-
-
-            If tipo = "Compras" Then
-
-
-                objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
-                objmotor.Comercial.Compras.ActualizaValorAtributo(tipodoc, numdoc, serie, "000", "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
-                objmotor.FechaEmpresaTrabalho()
-
-            End If
-
-
-            If tipo = "Stock" Then
-
-
-                objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
-                objmotor.Comercial.Stocks.ActualizaValorAtributo(tipodoc, numdoc, "000", serie, "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
-                objmotor.FechaEmpresaTrabalho()
-
-            End If
-        End If
 
         Exit Sub
 trataerro:
