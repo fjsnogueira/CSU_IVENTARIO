@@ -268,7 +268,7 @@ trataerro:
                 DocS.Tipodoc = "SS"
             End If
 
-            If (objLista.Valor("TipoDoc") = ("NE") Or objLista.Valor("TipoDoc") = ("NE1") Or objLista.Valor("TipoDoc") = ("GSA")) Then
+            If (objLista.Valor("TipoDoc") = ("FA") Or objLista.Valor("TipoDoc") = ("VD") Or objLista.Valor("TipoDoc") = ("GSA")) Then
                 DocS.Tipodoc = "SSA"
             End If
 
@@ -296,7 +296,7 @@ trataerro:
                 DocS.Tipodoc = "ESA"
             End If
 
-            If (objLista.Valor("TipoDoc") = ("TS") Or objLista.Valor("TipoDoc") = ("TE") Or objLista.Valor("TipoDoc") = ("TEA") Or objLista.Valor("TipoDoc") = ("TSA")) Then
+            If (objLista.Valor("TipoDoc") = ("QB") Or objLista.Valor("TipoDoc") = ("TS") Or objLista.Valor("TipoDoc") = ("TE") Or objLista.Valor("TipoDoc") = ("TEA") Or objLista.Valor("TipoDoc") = ("TSA")) Then
                 DocS.Tipodoc = objLista.Valor("TipoDoc")
             End If
 
