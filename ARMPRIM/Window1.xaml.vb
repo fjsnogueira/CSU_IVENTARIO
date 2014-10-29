@@ -72,22 +72,22 @@ trataerro:
         dpDataInicio3.SelectedDate = DateTime.Now
         dpDataFim3.SelectedDate = DateTime.Now.AddDays(-30)
 
-        chentredatas.IsChecked = True
-        chentredatas3.IsChecked = True
+        chentredatas.IsChecked = False
+        chentredatas3.IsChecked = False
         chentredatas2.IsChecked = True
         chentredatas4.IsChecked = True
 
-        actualizar_Compras()
-        actualizar_Entradas()
+        actualizar_EntradasStock()
+        actualizar_SaidasStock()
 
-        actualizar_ResuldadosCompras()
+        actualizar_ResuldadoEntradas()
         actualizar_ResuldadosSaidas()
         Exit Sub
 trataerro:
         MsgBox("Erro: " & Err.Number & " - " & Err.Description)
     End Sub
 
-    Public Sub actualizar_Entradas()
+    Public Sub actualizar_SaidasStock()
 
         On Error GoTo trataerro
         'Declare the query
@@ -115,23 +115,22 @@ trataerro:
     End Sub
 
     'actualizar compras
-    Public Sub actualizar_Compras()
+    Public Sub actualizar_EntradasStock()
         On Error GoTo trataerro
 
         'Declare the query
-        Dim str_query As String = "select distinct(Id),nome, tipodoc,serie,numdoc,sum(PrecUnit * Quantidade) as Totaldoc, data from View_Stock_Facturacao_Int where not EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida='E' "
+        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int "
+        str_query = str_query + "where not EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida='E' "
 
-        If chentredatas3.IsChecked = True Then
+        If chentredatas.IsChecked = True Then
             str_query = str_query & "and DATEDIFF(day, data, CAST('" & dpDataInicio3.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, data, CAST('" & dpDataFim3.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
         End If
 
         str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data"
         str_query = str_query & " order by tipodoc,serie,numdoc"
 
-        'str_query = "select * from artigo"
         myCommand = New SqlCommand(str_query, myConnection)
 
-        'MessageBox.Show(myCommand.ExecuteScalar().ToString())
         myAdapter = New SqlDataAdapter(myCommand)
         myAdapter.MissingSchemaAction = MissingSchemaAction.AddWithKey
         Dim ds As New DataSet1()
@@ -147,14 +146,17 @@ trataerro:
     Public Sub actualizar_ResuldadosSaidas()
         On Error GoTo trataerro
 
-        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc, sum(PrecUnit * Quantidade) as Totaldoc, data , (select tipodoc+'.'+ convert(nvarchar,numdoc)+'/'+serie from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) as CabecStock from View_Stock_Facturacao_Int where EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk)  and EntradaSaida= 'S' "
+        Dim str_query As String = " select distinct(vs.Id),nome,vs.tipodoc,vs.serie,vs.numdoc, sum(vs.PrecUnit * vs.Quantidade) as Totaldoc, vs.data ," + _
+            "cs.tipodoc + '.' + convert(nvarchar,cs.NumDoc)  + '/' + cs.Serie as CabecStock from View_Stock_Facturacao_Int VS inner join CabecSTK cs on vs.Id  = cs.CDU_Idstk "
+
+        str_query = str_query + " where EntradaSaida= 'S' "
 
         If chentredatas2.IsChecked = True Then
-            str_query = str_query & "and DATEDIFF(day, data, CAST('" & dpDataInicio2.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, data, CAST('" & dpDataFim2.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
+            str_query = str_query & "and DATEDIFF(day, vs.data, CAST('" & dpDataInicio2.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, vs.data, CAST('" & dpDataFim2.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
         End If
 
-        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data"
-        str_query = str_query & " order by tipodoc,serie,numdoc"
+        str_query = str_query & " group by vs.id,vs.nome,vs.tipodoc,vs.serie,vs.numdoc,vs.data, cs.CDU_Idstk, cs.TipoDoc,cs.NumDoc,cs.Serie"
+        str_query = str_query & " order by vs.tipodoc,vs.serie,vs.numdoc"
 
 
         'str_query = "select * from artigo"
@@ -172,23 +174,26 @@ trataerro:
 
     End Sub
 
-    Public Sub actualizar_ResuldadosCompras()
+    Public Sub actualizar_ResuldadoEntradas()
 
         On Error GoTo trataerro
 
-        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc, sum(PrecUnit * Quantidade) as Totaldoc, data , (select tipodoc+'.'+ convert(nvarchar,numdoc)+'/'+serie from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) as CabecStock from View_Stock_Facturacao_Int where EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida= 'E' "
+        ' Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc, sum(PrecUnit * Quantidade) as Totaldoc, data , (select tipodoc+'.'+ convert(nvarchar,numdoc)+'/'+serie from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) as CabecStock from View_Stock_Facturacao_Int where EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida= 'E' "
+
+        Dim str_query As String = " select distinct(vs.Id),nome,vs.tipodoc,vs.serie,vs.numdoc, sum(vs.PrecUnit * vs.Quantidade) as Totaldoc, vs.data ," + _
+            "cs.tipodoc + '.' + convert(nvarchar,cs.NumDoc)  + '/' + cs.Serie as CabecStock from View_Stock_Facturacao_Int VS inner join CabecSTK cs on vs.Id  = cs.CDU_Idstk "
+
+        str_query = str_query + " where EntradaSaida= 'E' "
 
         If chentredatas4.IsChecked = True Then
-            str_query = str_query & "and DATEDIFF(day, data, CAST('" & dpDataInicio4.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, data, CAST('" & dpDataFim4.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
+            str_query = str_query & "and DATEDIFF(day, vs.data, CAST('" & dpDataInicio4.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, vs.data, CAST('" & dpDataFim4.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
         End If
 
-        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data"
-        str_query = str_query & " order by tipodoc,serie,numdoc"
+        str_query = str_query & " group by vs.id,vs.nome,vs.tipodoc,vs.serie,vs.numdoc,vs.data, cs.CDU_Idstk, cs.TipoDoc,cs.NumDoc,cs.Serie"
+        str_query = str_query & " order by vs.tipodoc,vs.serie,vs.numdoc"
 
-        'str_query = "select * from artigo"
         myCommand = New SqlCommand(str_query, myConnection)
 
-        'MessageBox.Show(myCommand.ExecuteScalar().ToString())
         myAdapter = New SqlDataAdapter(myCommand)
         myAdapter.MissingSchemaAction = MissingSchemaAction.AddWithKey
         Dim ds As New DataSet1()
@@ -200,7 +205,7 @@ trataerro:
     End Sub
 
     Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        actualizar_Entradas()
+        actualizar_SaidasStock()
     End Sub
 
     Private Sub Actualizar_Click(sender As Object, e As RoutedEventArgs)
@@ -223,7 +228,7 @@ trataerro:
         End If
         MsgBox("Documento Criado com Sucesso")
 
-        actualizar_Entradas()
+        actualizar_SaidasStock()
 
         Exit Sub
 trataerro:
@@ -265,10 +270,14 @@ trataerro:
             Empresa = objLista.Valor("BasedeDados")
 
             Select Case objLista.Valor("TipoDoc")
-                Case "FA" Or "VD" Or "ND" Or "GS"
+                Case "FA" Or "VD" Or "ND" Or "GS" Or "DI" Or "DI1" Or "GS"
                     If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
+                Case "NE" Or "NE1" Or "GSA"
+                    DocS.Tipodoc = "SSA"
                 Case "NC" Or "DV"
                     DocS.Tipodoc = "DS"
+                Case "VCA"
+                    DocS.Tipodoc = "DCA"
                 Case "NCA" Or "DVA"
                     DocS.Tipodoc = "DSA"
                 Case "VD" Or "VF"
@@ -281,57 +290,57 @@ trataerro:
                     DocS.Tipodoc = objLista.Valor("TipoDoc")
             End Select
 
-                DocS.Serie = objLista.Valor("Serie")
-                DocS.CamposUtil("CDU_Idstk").Valor = id
+            DocS.Serie = objLista.Valor("Serie")
+            DocS.CamposUtil("CDU_Idstk").Valor = id
 
-                DocS.TipoEntidade = objLista.Valor("TipoEntidade")
-                DocS.Entidade = objLista.Valor("Entidade")
+            DocS.TipoEntidade = objLista.Valor("TipoEntidade")
+            DocS.Entidade = objLista.Valor("Entidade")
 
-                motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
-
-
-
-                While Not (objLista.NoInicio Or objLista.NoFim)
+            motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
 
 
-                    motor.Comercial.Stocks.AdicionaLinha(DocS, objLista.Valor("Artigo"), objLista.Valor("EntradaSaida"), objLista.Valor("Quantidade"), objLista.Valor("Armazem"), objLista.Valor("PrecUnit"), , , objLista.Valor("Localizacao"))
 
-                    'Item seguinte da lista
-                    objLista.Seguinte()
-
-                End While
-
-                motor.Comercial.Stocks.Actualiza(DocS)
+            While Not (objLista.NoInicio Or objLista.NoFim)
 
 
-                If tipo = "Vendas" Then
+                motor.Comercial.Stocks.AdicionaLinha(DocS, objLista.Valor("Artigo"), objLista.Valor("EntradaSaida"), objLista.Valor("Quantidade"), objLista.Valor("Armazem"), objLista.Valor("PrecUnit"), , , objLista.Valor("Localizacao"))
+
+                'Item seguinte da lista
+                objLista.Seguinte()
+
+            End While
+
+            motor.Comercial.Stocks.Actualiza(DocS)
 
 
-                    objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
-                    objmotor.Comercial.Vendas.ActualizaValorAtributo("000", tipodoc, serie, numdoc, "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
-                    objmotor.FechaEmpresaTrabalho()
-
-                End If
+            If tipo = "Vendas" Then
 
 
-                If tipo = "Compras" Then
-
-
-                    objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
-                    objmotor.Comercial.Compras.ActualizaValorAtributo(tipodoc, numdoc, serie, "000", "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
-                    objmotor.FechaEmpresaTrabalho()
+                objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
+                objmotor.Comercial.Vendas.ActualizaValorAtributo("000", tipodoc, serie, numdoc, "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
+                objmotor.FechaEmpresaTrabalho()
 
             End If
 
-                If tipo = "Stock" Then
+
+            If tipo = "Compras" Then
 
 
-                    objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
-                    objmotor.Comercial.Stocks.ActualizaValorAtributo(tipodoc, numdoc, "000", serie, "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
-                    objmotor.FechaEmpresaTrabalho()
+                objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
+                objmotor.Comercial.Compras.ActualizaValorAtributo(tipodoc, numdoc, serie, "000", "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
+                objmotor.FechaEmpresaTrabalho()
 
-                End If
             End If
+
+            If tipo = "Stock" Then
+
+
+                objmotor.AbreEmpresaTrabalho(motor.Contexto.TipoPlataforma, Empresa, motor.Contexto.UtilizadorActual, motor.Contexto.PasswordUtilizadorActual)
+                objmotor.Comercial.Stocks.ActualizaValorAtributo(tipodoc, numdoc, "000", serie, "CDU_Idstk", DocS.Tipodoc + "." + Str(DocS.NumDoc) + "/" + DocS.Serie)
+                objmotor.FechaEmpresaTrabalho()
+
+            End If
+        End If
 
         Exit Sub
 trataerro:
@@ -473,17 +482,17 @@ TrataErro:
 
             MsgBox("Documento Anulado com Sucesso")
 
-            actualizar_Compras()
+            actualizar_EntradasStock()
         End If
 
     End Sub
 
     Private Sub actualizarCompras_Click(sender As Object, e As RoutedEventArgs)
-        actualizar_Compras()
+        actualizar_EntradasStock()
     End Sub
 
     Private Sub ActualizarComprasResultados_Click(sender As Object, e As RoutedEventArgs)
-        actualizar_ResuldadosCompras()
+        actualizar_ResuldadoEntradas()
     End Sub
 
     Private Sub ImportarCompras_Click_1(sender As Object, e As RoutedEventArgs)
@@ -501,7 +510,7 @@ TrataErro:
 
             MsgBox("Documento Criado com Sucesso")
 
-            actualizar_Compras()
+            actualizar_EntradasStock()
         End If
 
 TrataErro:

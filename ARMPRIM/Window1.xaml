@@ -150,10 +150,10 @@
                                                     <ColumnDefinition Width="976*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <CheckBox x:Name="chentredatas2"  Content="Entre Datas" Margin="9,27,0,270" HorizontalAlignment="Left" Width="235" Grid.Column="1" />
-                                                <DatePicker x:Name="dpDataInicio2" Margin="79,92,795,196" RenderTransformOrigin="1.335,0.37" Grid.Column="1" />
+                                                <DatePicker x:Name="dpDataInicio2" Margin="79,92,795,375" RenderTransformOrigin="1.335,0.37" Grid.Column="1" />
                                                 <Label Content="Data Inicial:" HorizontalAlignment="Left" Margin="9,66,0,0" VerticalAlignment="Top" Grid.Column="1"/>
 
-                                                <DatePicker x:Name="dpDataFim2" Margin="79,65,795,223" Grid.Column="1" />
+                                                <DatePicker x:Name="dpDataFim2" Margin="79,65,795,402" Grid.Column="1" />
                                                 <Label Content="Data Final:" HorizontalAlignment="Left" Margin="9,93,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.395,2.001" Grid.Column="1"/>
 
                                             </Grid>
