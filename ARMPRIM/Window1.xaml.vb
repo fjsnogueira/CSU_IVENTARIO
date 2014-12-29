@@ -36,7 +36,7 @@ trataerro:
         motor = erpmotor
         connectionString = connection
 
-        If motor.Contexto.UtilizadorActual.ToLower = "Solly Asspi".ToLower Then
+        If motor.Contexto.UtilizadorActual.ToLower = "Solly Asspi".ToLower Or motor.Contexto.UtilizadorActual.ToLower = "accsys".ToLower Then
             btAnular1.IsEnabled = True
             btAnular2.IsEnabled = True
         End If
@@ -294,8 +294,11 @@ trataerro:
             DocS.TipoEntidade = objLista.Valor("TipoEntidade")
             DocS.Entidade = objLista.Valor("Entidade")
 
-            motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
 
+
+            motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
+            DocS.DataDoc = objLista.Valor("Data")
+            DocS.DataUltimaActualizacao = objLista.Valor("Data")
             While Not (objLista.NoInicio Or objLista.NoFim)
 
                 motor.Comercial.Stocks.AdicionaLinha(DocS, objLista.Valor("Artigo"), objLista.Valor("EntradaSaida"), objLista.Valor("Quantidade"), objLista.Valor("Armazem"), objLista.Valor("PrecUnit"), , , objLista.Valor("Localizacao"))
