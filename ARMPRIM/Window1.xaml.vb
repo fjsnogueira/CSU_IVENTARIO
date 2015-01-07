@@ -36,7 +36,7 @@ trataerro:
         motor = erpmotor
         connectionString = connection
 
-        If motor.Contexto.UtilizadorActual.ToLower = "Solly Asspi".ToLower Or motor.Contexto.UtilizadorActual.ToLower = "accsys".ToLower Then
+        If motor.Contexto.UtilizadorActual.ToLower = "Solly Asspi".ToLower Or motor.Contexto.UtilizadorActual.ToLower = "ACCSYS".ToLower Then
             btAnular1.IsEnabled = True
             btAnular2.IsEnabled = True
         End If
@@ -284,7 +284,7 @@ trataerro:
                     DocS.Tipodoc = "DC"
                 Case "VFA"
                     DocS.Tipodoc = "ESA"
-                Case "QB", "TS", "TE", "TEA", "TSA", "SI", "AIN", "AIP"
+                Case "QB" Or "TS" Or "TE" Or "TEA" Or "TSA" Or "SI"
                     DocS.Tipodoc = objLista.Valor("TipoDoc")
             End Select
 
@@ -294,11 +294,10 @@ trataerro:
             DocS.TipoEntidade = objLista.Valor("TipoEntidade")
             DocS.Entidade = objLista.Valor("Entidade")
 
-
-
             motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
-            DocS.DataDoc = objLista.Valor("Data")
-            DocS.DataUltimaActualizacao = objLista.Valor("Data")
+
+
+
             While Not (objLista.NoInicio Or objLista.NoFim)
 
                 motor.Comercial.Stocks.AdicionaLinha(DocS, objLista.Valor("Artigo"), objLista.Valor("EntradaSaida"), objLista.Valor("Quantidade"), objLista.Valor("Armazem"), objLista.Valor("PrecUnit"), , , objLista.Valor("Localizacao"))
@@ -475,7 +474,32 @@ TrataErro:
                 End If
             Next i
 
-            MsgBox("Documento Anulado com Sucesso")
+            'MsgBox("OperaDocumento Anulado com Sucesso")
+
+            actualizar_EntradasStock()
+        End If
+
+    End Sub
+
+    Private Sub btAnular2_Click_1(sender As Object, e As RoutedEventArgs) Handles btAnular2.Click
+
+        Dim dv As DataView
+        Dim i As Integer
+        dv = dgEntrada_Resultados2.ItemsSource
+
+
+
+        If (dgEntrada_Resultados2.Items.Count > 0) Then
+
+            For i = 0 To (dgEntrada_Resultados2.Items.Count - 1)
+                Dim selectedFile As System.Data.DataRowView
+                selectedFile = dgEntrada_Resultados2.Items(i)
+                If (Convert.ToBoolean(selectedFile.Row.ItemArray(2))) Then
+                    AnulardocSaidas(Convert.ToString(dv.Item(i).Row("Id")), Convert.ToString(dv.Item(i).Row("CabecStock")))
+                End If
+            Next i
+
+            'MsgBox("OperaDocumento Anulado com Sucesso")
 
             actualizar_EntradasStock()
         End If
@@ -603,7 +627,7 @@ trataerro:
             End If
 
             If tipo = "Compras" Then
-                objmotor2.Comercial.Compras.ActualizaValorAtributo("000", objLista.Valor("TipoDoc"), objLista.Valor("Serie"), objLista.Valor("NumDoc"), "CDU_Idstk", "")
+                objmotor2.Comercial.Compras.ActualizaValorAtributo(objLista.Valor("TipoDoc"), objLista.Valor("NumDoc"), objLista.Valor("Serie"), "000", "CDU_Idstk", "")
                 continua = True
             End If
 
