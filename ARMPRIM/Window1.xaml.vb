@@ -289,6 +289,9 @@ trataerro:
             End Select
 
             DocS.Serie = objLista.Valor("Serie")
+            DocS.DataDoc = objLista.Valor("Data")
+            DocS.DataUltimaActualizacao = objLista.Valor("Data")
+
             DocS.CamposUtil("CDU_Idstk").Valor = id
 
             DocS.TipoEntidade = objLista.Valor("TipoEntidade")
