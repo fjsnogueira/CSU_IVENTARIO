@@ -41,9 +41,6 @@ trataerro:
             btAnular2.IsEnabled = True
         End If
 
-        btAnular1.IsEnabled = True
-        btAnular2.IsEnabled = True
-
         myConnection = New SqlConnection(connectionString)
 
         'Declare the query
@@ -291,6 +288,9 @@ trataerro:
             End Select
 
             DocS.Serie = objLista.Valor("Serie")
+
+            If objLista.Valor("Serie") = "2014N" Then DocS.Serie = "2014"
+
             DocS.CamposUtil("CDU_Idstk").Valor = id
 
             DocS.TipoEntidade = objLista.Valor("TipoEntidade")
