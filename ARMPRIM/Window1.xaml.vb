@@ -41,7 +41,6 @@ trataerro:
             btAnular2.IsEnabled = True
         End If
 
-
         myConnection = New SqlConnection(connectionString)
 
         'Declare the query
@@ -268,7 +267,7 @@ trataerro:
             Empresa = objLista.Valor("BasedeDados")
 
             Select Case objLista.Valor("TipoDoc")
-                Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS", "GRM"
+                Case "FA" Or "VD" Or "ND" Or "GS" Or "DI" Or "DI1" Or "GS"
                     If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
                 Case "NE", "NE1", "GSA"
                     DocS.Tipodoc = "SSA"
@@ -284,7 +283,7 @@ trataerro:
                     DocS.Tipodoc = "DC"
                 Case "VFA"
                     DocS.Tipodoc = "ESA"
-                Case "QB" Or "TS" Or "TE" Or "TEA" Or "TSA" Or "SI"
+                Case "QB", "TS", "TE", "TEA", "TSA", "SI"
                     DocS.Tipodoc = objLista.Valor("TipoDoc")
             End Select
 
@@ -299,8 +298,6 @@ trataerro:
             DocS.Entidade = objLista.Valor("Entidade")
 
             motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
-
-
 
             While Not (objLista.NoInicio Or objLista.NoFim)
 
