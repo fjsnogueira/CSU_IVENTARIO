@@ -268,7 +268,7 @@ trataerro:
             Empresa = objLista.Valor("BasedeDados")
 
             Select Case objLista.Valor("TipoDoc")
-                Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS"
+                Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS", "GRM"
                     If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
                 Case "NE", "NE1", "GSA"
                     DocS.Tipodoc = "SSA"
@@ -289,6 +289,7 @@ trataerro:
             End Select
 
             DocS.Serie = objLista.Valor("Serie")
+            If objLista.Valor("Serie") = "2014N" Or objLista.Valor("Serie") = "2014G" Then DocS.Serie = "2014"
             DocS.DataDoc = objLista.Valor("Data")
             DocS.DataUltimaActualizacao = objLista.Valor("Data")
 
