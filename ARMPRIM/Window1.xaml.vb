@@ -293,6 +293,7 @@ trataerro:
             If objLista.Valor("Serie") = "2014N" Or objLista.Valor("Serie") = "2014G" Then DocS.Serie = "2014"
             DocS.DataDoc = objLista.Valor("Data")
             DocS.DataUltimaActualizacao = objLista.Valor("Data")
+            DocS.CamposUtil("CDU_DataSincronizacao").Valor = Today
 
             DocS.CamposUtil("CDU_Idstk").Valor = id
 
