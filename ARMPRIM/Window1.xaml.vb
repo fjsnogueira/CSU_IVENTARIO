@@ -267,9 +267,9 @@ trataerro:
             Empresa = objLista.Valor("BasedeDados")
 
             Select Case objLista.Valor("TipoDoc")
-                Case "FA" Or "VD" Or "ND" Or "GS" Or "DI" Or "DI1" Or "GS"
+                Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS", "GRM"
                     If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
-                Case "VS"
+                Case "VC"
                     DocS.Tipodoc = "SS"
                 Case "NE", "NE1", "GSA"
                     DocS.Tipodoc = "SSA"
@@ -290,17 +290,19 @@ trataerro:
             End Select
 
             DocS.Serie = objLista.Valor("Serie")
+
             If objLista.Valor("Serie") = "2014N" Or objLista.Valor("Serie") = "2014G" Then DocS.Serie = "2014"
-            DocS.DataDoc = objLista.Valor("Data")
-            DocS.DataUltimaActualizacao = objLista.Valor("Data")
-            DocS.CamposUtil("CDU_DataSincronizacao").Valor = Today
 
             DocS.CamposUtil("CDU_Idstk").Valor = id
+            DocS.CamposUtil("CDU_DataSincronizacao").Valor = Today
 
             DocS.TipoEntidade = objLista.Valor("TipoEntidade")
             DocS.Entidade = objLista.Valor("Entidade")
 
             motor.Comercial.Stocks.PreencheDadosRelacionados(DocS)
+
+            DocS.DataDoc = objLista.Valor("Data")
+            DocS.DataUltimaActualizacao = objLista.Valor("Data")
 
             While Not (objLista.NoInicio Or objLista.NoFim)
 
