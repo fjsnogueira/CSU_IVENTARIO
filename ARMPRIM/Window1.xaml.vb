@@ -269,8 +269,6 @@ trataerro:
             Select Case objLista.Valor("TipoDoc")
                 Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS", "GRM", "VC"
                     If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
-                Case "VC"
-                    DocS.Tipodoc = "SS"
                 Case "NE", "NE1", "GSA"
                     DocS.Tipodoc = "SSA"
                 Case "NC", "DV"
