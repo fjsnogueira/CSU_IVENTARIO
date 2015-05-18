@@ -35,8 +35,8 @@
                                                     <DataGridTextColumn Binding="{Binding TipoDoc}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="50" Header="Doc."/>
                                                     <DataGridTextColumn Binding="{Binding Serie}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="50" Header="Serie"/>
                                                     <DataGridTextColumn Binding="{Binding NumDoc}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="60" Header="NumDoc"/>
-                                                    <DataGridTextColumn Binding="{Binding Nome}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="300" Header="Entidade"/>
-                                                    <DataGridTextColumn Binding="{Binding GR_Number}" IsReadOnly="False" ClipboardContentBinding="{x:Null}" Width="300" Header="GR. NR"/>
+                                                    <DataGridTextColumn Binding="{Binding Nome}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="200" Header="Entidade"/>
+                                                    <DataGridTextColumn Binding="{Binding Entidade_GR_Number}" IsReadOnly="False" ClipboardContentBinding="{x:Null}" Width="60" Header="GR. NR"/>
 
 
                                                     <DataGridTextColumn Binding="{Binding Totaldoc, StringFormat='{}{0:n}'}" IsReadOnly="True" ClipboardContentBinding="{x:Null}" Width="75" Header="Total"/>

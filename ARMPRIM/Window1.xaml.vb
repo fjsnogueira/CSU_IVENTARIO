@@ -90,13 +90,13 @@ trataerro:
 
         On Error GoTo trataerro
         'Declare the query
-        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int where not EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida='S' "
+        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc,GR_NUMBER, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int where not EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida='S' "
 
         If chentredatas.IsChecked = True Then
             str_query = str_query & "and DATEDIFF(day, data, CAST('" & dpDataInicio1.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, data, CAST('" & dpDataFim1.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
         End If
 
-        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data"
+        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data,GR_NUMBER"
         str_query = str_query & " order by tipodoc,serie,numdoc"
 
         'str_query = "select * from artigo"
@@ -118,14 +118,14 @@ trataerro:
         On Error GoTo trataerro
 
         'Declare the query
-        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int "
+        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc,GR_NUMBER, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int "
         str_query = str_query + "where not EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida='E' "
 
         If chentredatas.IsChecked = True Then
             str_query = str_query & "and DATEDIFF(day, data, CAST('" & dpDataInicio3.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, data, CAST('" & dpDataFim3.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
         End If
 
-        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data"
+        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data,GR_NUMBER"
         str_query = str_query & " order by tipodoc,serie,numdoc"
 
         myCommand = New SqlCommand(str_query, myConnection)
@@ -222,10 +222,13 @@ trataerro:
             For i = 0 To (dgEntrada.Items.Count - 1)
 
                 If (dv.Item(i).Row("IsSelected") = "True") Then
-
-                    If (dv.Item(i).Row("Entidade_GR_Number") = True) Then
-                        If (dv.Item(i).Row("Entidade_GR_Number") = vbNull) Then
-                            MessageBox.Show("É obrigatorio a introdução do numero da GR na linha " + Str(i + 1))
+                    Dim teste As Boolean = dv.Item(i).Row("GR_NUMBER")
+                    If (dv.Item(i).Row("GR_NUMBER") = True) Then
+                        Dim gr_number As String = dv.Item(i).Row("Entidade_GR_Number").ToString
+                        If (gr_number = "") Then
+                            MessageBox.Show("É obrigatorio a introdução do numero da GR no documento " +
+                                            dv.Item(i).Row("Tipodoc").ToString() + "." + dv.Item(i).Row("NumDoc").ToString() +
+                                            dv.Item(i).Row("Serie").ToString())
                         Else
                             Gravadoc(dv.Item(i).Row("Id"), "Vendas", dv.Item(i).Row("Entidade_GR_Number"))
                         End If
@@ -258,6 +261,7 @@ trataerro:
         Dim tipodoc As String
         Dim numdoc As Long
         Dim Empresa As String
+
 
         Dim objmotor As New ErpBS
 
@@ -304,6 +308,8 @@ trataerro:
 
             DocS.CamposUtil("CDU_Idstk").Valor = id
             DocS.CamposUtil("CDU_DataSincronizacao").Valor = Today
+
+            DocS.CamposUtil("CDU_Gr_Number").Valor = Gr_Number
 
             DocS.TipoEntidade = objLista.Valor("TipoEntidade")
             DocS.Entidade = objLista.Valor("Entidade")
