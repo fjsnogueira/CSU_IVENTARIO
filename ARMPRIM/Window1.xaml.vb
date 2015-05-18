@@ -213,27 +213,30 @@ trataerro:
 
     Private Sub Button_Click_1(sender As Object, e As RoutedEventArgs)
         On Error GoTo trataerro
-        If (dgEntrada.Items.Count > 0) Then
-            Dim i As Integer
-            For i = 0 To (dgEntrada.Items.Count - 1)
-                Dim selectedFile As System.Data.DataRowView
-                selectedFile = dgEntrada.Items(i)
-                If (Convert.ToBoolean(selectedFile.Row.ItemArray(2))) Then
 
-                    If Convert.ToString(selectedFile.Row.ItemArray(0)) = "Shoprite" Then
-                        If (Convert.ToString(selectedFile.Row.ItemArray(0)) = "") Then
+        Dim dv As DataView
+        Dim i As Integer
+        dv = dgEntrada.ItemsSource
+
+        If (dgEntrada.Items.Count > 0) Then
+            For i = 0 To (dgEntrada.Items.Count - 1)
+
+                If (dv.Item(i).Row("IsSelected") = "True") Then
+
+                    If (dv.Item(i).Row("Entidade_GR_Number") = True) Then
+                        If (dv.Item(i).Row("Entidade_GR_Number") = vbNull) Then
                             MessageBox.Show("É obrigatorio a introdução do numero da GR na linha " + Str(i + 1))
                         Else
-                            Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Vendas", selectedFile.Row.ItemArray(9).ToString())
+                            Gravadoc(dv.Item(i).Row("Id"), "Vendas", dv.Item(i).Row("Entidade_GR_Number"))
                         End If
                     Else
-                        Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Vendas", "")
+                        Gravadoc(dv.Item(i).Row("Id"), "Vendas", "")
 
                     End If
                 End If
             Next i
         End If
-        MsgBox("Documento Criado com Sucesso")
+        MsgBox("Operação de Sincronização Terminada!")
 
         actualizar_SaidasStock()
 
@@ -535,11 +538,11 @@ TrataErro:
                 Dim selectedFile As System.Data.DataRowView
                 selectedFile = dgEntrada2.Items(i)
                 If (Convert.ToBoolean(selectedFile.Row.ItemArray(2))) Then
-                    Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Compras")
+                    Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Compras", "")
                 End If
             Next i
 
-            MsgBox("Documento Criado com Sucesso")
+            MsgBox("Operação terminada!")
 
             actualizar_EntradasStock()
         End If
