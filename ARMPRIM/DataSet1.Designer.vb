@@ -692,6 +692,10 @@ Partial Public Class DataSet1
 
         Private columnNumDoc As Global.System.Data.DataColumn
 
+        Private columnEntidade As Global.System.Data.DataColumn
+
+        Private columnGR_Number As Global.System.Data.DataColumn
+
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
         Public Sub New()
@@ -800,6 +804,22 @@ Partial Public Class DataSet1
         End Property
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public ReadOnly Property EntidadeColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnEntidade
+            End Get
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public ReadOnly Property GR_NumberColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnGR_Number
+            End Get
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0"), _
          Global.System.ComponentModel.Browsable(False)> _
         Public ReadOnly Property Count() As Integer
@@ -836,9 +856,9 @@ Partial Public Class DataSet1
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
-        Public Overloads Function AddCabec_DocRow(ByVal Id As String, ByVal Nome As String, ByVal IsSelected As Boolean, ByVal Data As Date, ByVal Totaldoc As Decimal, ByVal CabecStock_ As String, ByVal TipoDoc As String, ByVal Serie As String, ByVal NumDoc As Long) As Cabec_DocRow
+        Public Overloads Function AddCabec_DocRow(ByVal Id As String, ByVal Nome As String, ByVal IsSelected As Boolean, ByVal Data As Date, ByVal Totaldoc As Decimal, ByVal CabecStock_ As String, ByVal TipoDoc As String, ByVal Serie As String, ByVal NumDoc As Long, ByVal Entidade As String, ByVal GR_Number As String) As Cabec_DocRow
             Dim rowCabec_DocRow As Cabec_DocRow = CType(Me.NewRow, Cabec_DocRow)
-            Dim columnValuesArray() As Object = New Object() {Id, Nome, IsSelected, Data, Totaldoc, CabecStock_, TipoDoc, Serie, NumDoc}
+            Dim columnValuesArray() As Object = New Object() {Id, Nome, IsSelected, Data, Totaldoc, CabecStock_, TipoDoc, Serie, NumDoc, Entidade, GR_Number}
             rowCabec_DocRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowCabec_DocRow)
             Return rowCabec_DocRow
@@ -870,6 +890,8 @@ Partial Public Class DataSet1
             Me.columnTipoDoc = MyBase.Columns("TipoDoc")
             Me.columnSerie = MyBase.Columns("Serie")
             Me.columnNumDoc = MyBase.Columns("NumDoc")
+            Me.columnEntidade = MyBase.Columns("Entidade")
+            Me.columnGR_Number = MyBase.Columns("GR_Number")
         End Sub
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
@@ -893,6 +915,10 @@ Partial Public Class DataSet1
             MyBase.Columns.Add(Me.columnSerie)
             Me.columnNumDoc = New Global.System.Data.DataColumn("NumDoc", GetType(Long), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnNumDoc)
+            Me.columnEntidade = New Global.System.Data.DataColumn("Entidade", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnEntidade)
+            Me.columnGR_Number = New Global.System.Data.DataColumn("GR_Number", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnGR_Number)
             Me.columnIsSelected.DefaultValue = CType(False, Boolean)
         End Sub
 
@@ -1434,6 +1460,36 @@ Partial Public Class DataSet1
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public Property Entidade() As String
+            Get
+                Try
+                    Return CType(Me(Me.tableCabec_Doc.EntidadeColumn), String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'Entidade' in table 'Cabec_Doc' is DBNull.", e)
+                End Try
+            End Get
+            Set(value As String)
+                Me(Me.tableCabec_Doc.EntidadeColumn) = value
+            End Set
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public Property GR_Number() As String
+            Get
+                Try
+                    Return CType(Me(Me.tableCabec_Doc.GR_NumberColumn), String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'GR_Number' in table 'Cabec_Doc' is DBNull.", e)
+                End Try
+            End Get
+            Set(value As String)
+                Me(Me.tableCabec_Doc.GR_NumberColumn) = value
+            End Set
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
         Public Function IsIdNull() As Boolean
             Return Me.IsNull(Me.tableCabec_Doc.IdColumn)
         End Function
@@ -1538,6 +1594,30 @@ Partial Public Class DataSet1
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
         Public Sub SetNumDocNull()
             Me(Me.tableCabec_Doc.NumDocColumn) = Global.System.Convert.DBNull
+        End Sub
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public Function IsEntidadeNull() As Boolean
+            Return Me.IsNull(Me.tableCabec_Doc.EntidadeColumn)
+        End Function
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public Sub SetEntidadeNull()
+            Me(Me.tableCabec_Doc.EntidadeColumn) = Global.System.Convert.DBNull
+        End Sub
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public Function IsGR_NumberNull() As Boolean
+            Return Me.IsNull(Me.tableCabec_Doc.GR_NumberColumn)
+        End Function
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")> _
+        Public Sub SetGR_NumberNull()
+            Me(Me.tableCabec_Doc.GR_NumberColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
 

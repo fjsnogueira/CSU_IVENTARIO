@@ -220,8 +220,16 @@ trataerro:
                 selectedFile = dgEntrada.Items(i)
                 If (Convert.ToBoolean(selectedFile.Row.ItemArray(2))) Then
 
-                    Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Vendas")
+                    If Convert.ToString(selectedFile.Row.ItemArray(0)) = "Shoprite" Then
+                        If (Convert.ToString(selectedFile.Row.ItemArray(0)) = "") Then
+                            MessageBox.Show("É obrigatorio a introdução do numero da GR na linha " + Str(i + 1))
+                        Else
+                            Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Vendas", selectedFile.Row.ItemArray(9).ToString())
+                        End If
+                    Else
+                        Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Vendas", "")
 
+                    End If
                 End If
             Next i
         End If
@@ -235,7 +243,7 @@ trataerro:
 
     End Sub
 
-    Private Sub Gravadoc(id As String, tipo As String)
+    Private Sub Gravadoc(id As String, tipo As String, ByRef Gr_Number As String)
         On Error GoTo trataerro
         Dim strSQL As String
         Dim objLista As StdBELista
