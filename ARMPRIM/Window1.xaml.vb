@@ -227,7 +227,7 @@ trataerro:
                         Dim gr_number As String = dv.Item(i).Row("Entidade_GR_Number").ToString
                         If (gr_number = "") Then
                             MessageBox.Show("É obrigatorio a introdução do numero da GR no documento " +
-                                            dv.Item(i).Row("Tipodoc").ToString() + "." + dv.Item(i).Row("NumDoc").ToString() +
+                                            dv.Item(i).Row("Tipodoc").ToString() + "." + dv.Item(i).Row("NumDoc").ToString() + "\" +
                                             dv.Item(i).Row("Serie").ToString())
                         Else
                             Gravadoc(dv.Item(i).Row("Id"), "Vendas", dv.Item(i).Row("Entidade_GR_Number"))
@@ -282,7 +282,7 @@ trataerro:
             Empresa = objLista.Valor("BasedeDados")
 
             Select Case objLista.Valor("TipoDoc")
-                Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS", "GRM", "VC"
+                Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS", "GRM"
                     If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
                 Case "NE", "NE1", "GSA"
                     DocS.Tipodoc = "SSA"
@@ -292,8 +292,10 @@ trataerro:
                     DocS.Tipodoc = "DCA"
                 Case "NCA", "DVA"
                     DocS.Tipodoc = "DSA"
-                Case "VD", "VF", "VC"
+                Case "VD", "VF"
                     If objLista.Valor("Modulo") = "C" Then DocS.Tipodoc = "ES"
+                Case "VC"
+                    If objLista.Valor("Modulo") = "C" Then DocS.Tipodoc = "SS"
                 Case "Vc", "VNC"
                     DocS.Tipodoc = "DC"
                 Case "VFA"
