@@ -1,10 +1,10 @@
-﻿Imports Interop.ErpBS800
+﻿Imports Interop.ErpBS900
 Imports System.Data.SqlClient
 Imports System.Data
-Imports Interop.StdBE800
-Imports Interop.GcpBE800
-Imports Interop.StdPlatBE800
-Imports Interop.StdPlatBS800
+Imports Interop.StdBE900
+Imports Interop.GcpBE900
+Imports Interop.StdPlatBE900
+Imports Interop.StdPlatBS900
 
 Public Class Window1
 

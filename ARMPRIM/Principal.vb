@@ -1,7 +1,7 @@
 ﻿Imports System.Data.SqlClient
-Imports Interop.ErpBS800
+Imports Interop.ErpBS900
 Imports System.Data
-Imports Interop.StdPlatBS800
+Imports Interop.StdPlatBS900
 
 Public Class Principal
 
