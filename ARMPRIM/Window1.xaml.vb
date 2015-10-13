@@ -90,13 +90,13 @@ trataerro:
 
         On Error GoTo trataerro
         'Declare the query
-        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int where not EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida='S' "
+        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc,GR_NUMBER, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int where not EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida='S' "
 
         If chentredatas.IsChecked = True Then
             str_query = str_query & "and DATEDIFF(day, data, CAST('" & dpDataInicio1.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, data, CAST('" & dpDataFim1.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
         End If
 
-        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data"
+        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data,GR_NUMBER"
         str_query = str_query & " order by tipodoc,serie,numdoc"
 
         'str_query = "select * from artigo"
@@ -118,14 +118,14 @@ trataerro:
         On Error GoTo trataerro
 
         'Declare the query
-        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int "
+        Dim str_query As String = "select distinct(Id),nome,tipodoc,serie,numdoc,GR_NUMBER, sum(PrecUnit * Quantidade)  as Totaldoc, data from View_Stock_Facturacao_Int "
         str_query = str_query + "where not EXISTS (select cdu_idstk from cabecstk where View_Stock_Facturacao_Int.Id = cdu_idstk) and EntradaSaida='E' "
 
         If chentredatas.IsChecked = True Then
             str_query = str_query & "and DATEDIFF(day, data, CAST('" & dpDataInicio3.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) >= 0  and  DATEDIFF(day, data, CAST('" & dpDataFim3.SelectedDate.Value.ToString("MM/dd/yyyy") & "' AS DATE) ) <= 0"
         End If
 
-        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data"
+        str_query = str_query & " group by id,nome,tipodoc,serie,numdoc,data,GR_NUMBER"
         str_query = str_query & " order by tipodoc,serie,numdoc"
 
         myCommand = New SqlCommand(str_query, myConnection)
@@ -213,19 +213,33 @@ trataerro:
 
     Private Sub Button_Click_1(sender As Object, e As RoutedEventArgs)
         On Error GoTo trataerro
+
+        Dim dv As DataView
+        Dim i As Integer
+        dv = dgEntrada.ItemsSource
+
         If (dgEntrada.Items.Count > 0) Then
-            Dim i As Integer
             For i = 0 To (dgEntrada.Items.Count - 1)
-                Dim selectedFile As System.Data.DataRowView
-                selectedFile = dgEntrada.Items(i)
-                If (Convert.ToBoolean(selectedFile.Row.ItemArray(2))) Then
 
-                    Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Vendas")
+                If (dv.Item(i).Row("IsSelected") = "True") Then
+                    Dim teste As Boolean = dv.Item(i).Row("GR_NUMBER")
+                    If (dv.Item(i).Row("GR_NUMBER") = True) Then
+                        Dim gr_number As String = dv.Item(i).Row("Entidade_GR_Number").ToString
+                        If (gr_number = "") Then
+                            MessageBox.Show("É obrigatorio a introdução do numero da GR no documento " +
+                                            dv.Item(i).Row("Tipodoc").ToString() + "." + dv.Item(i).Row("NumDoc").ToString() + "\" +
+                                            dv.Item(i).Row("Serie").ToString())
+                        Else
+                            Gravadoc(dv.Item(i).Row("Id"), "Vendas", dv.Item(i).Row("Entidade_GR_Number"))
+                        End If
+                    Else
+                        Gravadoc(dv.Item(i).Row("Id"), "Vendas", "")
 
+                    End If
                 End If
             Next i
         End If
-        MsgBox("Documento Criado com Sucesso")
+        MsgBox("Operação de Sincronização Terminada!")
 
         actualizar_SaidasStock()
 
@@ -235,7 +249,7 @@ trataerro:
 
     End Sub
 
-    Private Sub Gravadoc(id As String, tipo As String)
+    Private Sub Gravadoc(id As String, tipo As String, ByRef Gr_Number As String)
         On Error GoTo trataerro
         Dim strSQL As String
         Dim objLista As StdBELista
@@ -247,6 +261,7 @@ trataerro:
         Dim tipodoc As String
         Dim numdoc As Long
         Dim Empresa As String
+
 
         Dim objmotor As New ErpBS
 
@@ -267,7 +282,7 @@ trataerro:
             Empresa = objLista.Valor("BasedeDados")
 
             Select Case objLista.Valor("TipoDoc")
-                Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS", "GRM", "VC"
+                Case "FA", "VD", "ND", "GS", "DI", "DI1", "GS", "GRM"
                     If objLista.Valor("Modulo") = "V" Then DocS.Tipodoc = "SS"
                 Case "NE", "NE1", "GSA"
                     DocS.Tipodoc = "SSA"
@@ -277,8 +292,10 @@ trataerro:
                     DocS.Tipodoc = "DCA"
                 Case "NCA", "DVA"
                     DocS.Tipodoc = "DSA"
-                Case "VD", "VF", "VC"
+                Case "VD", "VF"
                     If objLista.Valor("Modulo") = "C" Then DocS.Tipodoc = "ES"
+                Case "VC"
+                    If objLista.Valor("Modulo") = "C" Then DocS.Tipodoc = "SS"
                 Case "Vc", "VNC"
                     DocS.Tipodoc = "DC"
                 Case "VFA"
@@ -293,6 +310,8 @@ trataerro:
 
             DocS.CamposUtil("CDU_Idstk").Valor = id
             DocS.CamposUtil("CDU_DataSincronizacao").Valor = Today
+
+            DocS.CamposUtil("CDU_Gr_Number").Valor = Gr_Number
 
             DocS.TipoEntidade = objLista.Valor("TipoEntidade")
             DocS.Entidade = objLista.Valor("Entidade")
@@ -527,11 +546,11 @@ TrataErro:
                 Dim selectedFile As System.Data.DataRowView
                 selectedFile = dgEntrada2.Items(i)
                 If (Convert.ToBoolean(selectedFile.Row.ItemArray(2))) Then
-                    Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Compras")
+                    Gravadoc(Convert.ToString(selectedFile.Row.ItemArray(0)), "Compras", "")
                 End If
             Next i
 
-            MsgBox("Documento Criado com Sucesso")
+            MsgBox("Operação terminada!")
 
             actualizar_EntradasStock()
         End If

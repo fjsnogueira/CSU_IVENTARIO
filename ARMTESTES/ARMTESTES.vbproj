@@ -75,7 +75,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.ErpBS800">
-      <HintPath>..\..\..\Common Files\PRIMAVERA\SG800\Interop.ErpBS800.dll</HintPath>
+      <HintPath>..\..\..\..\Common Files\PRIMAVERA\SG800\Interop.ErpBS800.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.ErpBS900">
@@ -83,7 +83,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.GcpBE800">
-      <HintPath>..\..\..\Common Files\PRIMAVERA\SG800\Interop.GcpBE800.dll</HintPath>
+      <HintPath>..\..\..\..\Common Files\PRIMAVERA\SG800\Interop.GcpBE800.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.GcpBE900">
@@ -91,7 +91,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.IGcpBS800">
-      <HintPath>..\..\..\Common Files\PRIMAVERA\SG800\Interop.IGcpBS800.dll</HintPath>
+      <HintPath>..\..\..\..\Common Files\PRIMAVERA\SG800\Interop.IGcpBS800.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.IGcpBS900">
@@ -103,7 +103,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdBE800">
-      <HintPath>..\..\..\Common Files\PRIMAVERA\SG800\Interop.StdBE800.dll</HintPath>
+      <HintPath>..\..\..\..\Common Files\PRIMAVERA\SG800\Interop.StdBE800.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdBE900">
@@ -111,7 +111,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdPlatBE800">
-      <HintPath>..\..\..\Common Files\PRIMAVERA\SG800\Interop.StdPlatBE800.dll</HintPath>
+      <HintPath>..\..\..\..\Common Files\PRIMAVERA\SG800\Interop.StdPlatBE800.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdPlatBE900">
@@ -119,7 +119,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdPlatBS800">
-      <HintPath>..\..\..\Common Files\PRIMAVERA\SG800\Interop.StdPlatBS800.dll</HintPath>
+      <HintPath>..\..\..\..\Common Files\PRIMAVERA\SG800\Interop.StdPlatBS800.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Interop.StdPlatBS900">

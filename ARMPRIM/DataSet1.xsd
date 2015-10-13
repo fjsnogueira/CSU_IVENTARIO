@@ -12,7 +12,7 @@
   <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="Linhas_Doc" msprop:Generator_TableClassName="Linhas_DocDataTable" msprop:Generator_TableVarName="tableLinhas_Doc" msprop:Generator_RowChangedName="Linhas_DocRowChanged" msprop:Generator_TablePropName="Linhas_Doc" msprop:Generator_RowDeletingName="Linhas_DocRowDeleting" msprop:Generator_RowChangingName="Linhas_DocRowChanging" msprop:Generator_RowEvHandlerName="Linhas_DocRowChangeEventHandler" msprop:Generator_RowDeletedName="Linhas_DocRowDeleted" msprop:Generator_RowClassName="Linhas_DocRow" msprop:Generator_UserTableName="Linhas_Doc" msprop:Generator_RowEvArgName="Linhas_DocRowChangeEvent">
+        <xs:element name="Linhas_Doc" msprop:Generator_TableClassName="Linhas_DocDataTable" msprop:Generator_TableVarName="tableLinhas_Doc" msprop:Generator_TablePropName="Linhas_Doc" msprop:Generator_RowDeletingName="Linhas_DocRowDeleting" msprop:Generator_RowChangingName="Linhas_DocRowChanging" msprop:Generator_RowEvHandlerName="Linhas_DocRowChangeEventHandler" msprop:Generator_RowDeletedName="Linhas_DocRowDeleted" msprop:Generator_UserTableName="Linhas_Doc" msprop:Generator_RowChangedName="Linhas_DocRowChanged" msprop:Generator_RowEvArgName="Linhas_DocRowChangeEvent" msprop:Generator_RowClassName="Linhas_DocRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:string" minOccurs="0" />
@@ -27,7 +27,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Cabec_Doc" msprop:Generator_TableClassName="Cabec_DocDataTable" msprop:Generator_TableVarName="tableCabec_Doc" msprop:Generator_RowChangedName="Cabec_DocRowChanged" msprop:Generator_TablePropName="Cabec_Doc" msprop:Generator_RowDeletingName="Cabec_DocRowDeleting" msprop:Generator_RowChangingName="Cabec_DocRowChanging" msprop:Generator_RowEvHandlerName="Cabec_DocRowChangeEventHandler" msprop:Generator_RowDeletedName="Cabec_DocRowDeleted" msprop:Generator_RowClassName="Cabec_DocRow" msprop:Generator_UserTableName="Cabec_Doc" msprop:Generator_RowEvArgName="Cabec_DocRowChangeEvent">
+        <xs:element name="Cabec_Doc" msprop:Generator_TableClassName="Cabec_DocDataTable" msprop:Generator_TableVarName="tableCabec_Doc" msprop:Generator_TablePropName="Cabec_Doc" msprop:Generator_RowDeletingName="Cabec_DocRowDeleting" msprop:Generator_RowChangingName="Cabec_DocRowChanging" msprop:Generator_RowEvHandlerName="Cabec_DocRowChangeEventHandler" msprop:Generator_RowDeletedName="Cabec_DocRowDeleted" msprop:Generator_UserTableName="Cabec_Doc" msprop:Generator_RowChangedName="Cabec_DocRowChanged" msprop:Generator_RowEvArgName="Cabec_DocRowChangeEvent" msprop:Generator_RowClassName="Cabec_DocRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:string" minOccurs="0" />
@@ -39,6 +39,9 @@
               <xs:element name="TipoDoc" msprop:Generator_ColumnVarNameInTable="columnTipoDoc" msprop:Generator_ColumnPropNameInRow="TipoDoc" msprop:Generator_ColumnPropNameInTable="TipoDocColumn" msprop:Generator_UserColumnName="TipoDoc" type="xs:string" minOccurs="0" />
               <xs:element name="Serie" msprop:Generator_ColumnVarNameInTable="columnSerie" msprop:Generator_ColumnPropNameInRow="Serie" msprop:Generator_ColumnPropNameInTable="SerieColumn" msprop:Generator_UserColumnName="Serie" type="xs:string" minOccurs="0" />
               <xs:element name="NumDoc" msprop:Generator_ColumnVarNameInTable="columnNumDoc" msprop:Generator_ColumnPropNameInRow="NumDoc" msprop:Generator_ColumnPropNameInTable="NumDocColumn" msprop:Generator_UserColumnName="NumDoc" type="xs:long" minOccurs="0" />
+              <xs:element name="Entidade" msprop:Generator_ColumnVarNameInTable="columnEntidade" msprop:Generator_ColumnPropNameInRow="Entidade" msprop:Generator_ColumnPropNameInTable="EntidadeColumn" msprop:Generator_UserColumnName="Entidade" type="xs:string" minOccurs="0" />
+              <xs:element name="GR_Number" msprop:Generator_ColumnVarNameInTable="columnGR_Number" msprop:Generator_ColumnPropNameInRow="GR_Number" msprop:Generator_ColumnPropNameInTable="GR_NumberColumn" msprop:Generator_UserColumnName="GR_Number" type="xs:boolean" default="false" minOccurs="0" />
+              <xs:element name="Entidade_GR_Number" msprop:Generator_ColumnVarNameInTable="columnEntidade_GR_Number" msprop:Generator_ColumnPropNameInRow="Entidade_GR_Number" msprop:Generator_ColumnPropNameInTable="Entidade_GR_NumberColumn" msprop:Generator_UserColumnName="Entidade_GR_Number" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
