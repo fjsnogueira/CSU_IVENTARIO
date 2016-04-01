@@ -3,7 +3,6 @@ Imports System.Data.SqlClient
 Imports System.Data
 Imports Interop.StdBE900
 Imports Interop.GcpBE900
-Imports Interop.StdPlatBE900
 Imports Interop.StdPlatBS900
 
 Public Class Window1
@@ -20,6 +19,17 @@ Public Class Window1
 
     'Declare the DataSet object
     Dim myDataSet As DataSet
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
+
+
 
     Public Sub inicializar(ds As DataSet1)
         On Error GoTo trataerro
