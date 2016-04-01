@@ -21,13 +21,59 @@ Public Class Window1
     Dim myDataSet As DataSet
 
     Public Sub New()
-
+        
+        AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf CurrentDomain_AssemblyResolve
+        
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
 
     End Sub
+    
+    ''' <summary> 
+    '''     Módulo de exemplo de carregamento de Interops da pasta de ficheiros comuns. 
+    ''' </summary> 
+    ''' <remarks></remarks> 
+    <Runtime.InteropServices.ComVisible(False)> _
+    Public Function CurrentDomain_AssemblyResolve(ByVal sender As Object, ByVal args As ResolveEventArgs) As Assembly
+
+        Const PRIMAVERA_COMMON_FILES_FOLDER As String = pastaConfig
+
+        Dim outAssembly, objExeAssembly As Assembly
+        Dim strTempAssemblyPath As String = ""
+        Dim strArgToLoad As String
+
+        objExeAssembly = Assembly.GetExecutingAssembly
+        Dim arrRefAssemblyNames() As AssemblyName = objExeAssembly.GetReferencedAssemblies
+
+        strArgToLoad = args.Name.Substring(0, args.Name.IndexOf(","))
+
+        For Each strAName As AssemblyName In arrRefAssemblyNames
+
+            If strAName.FullName.Substring(0, strAName.FullName.IndexOf(",")) = strArgToLoad Then
+
+                strTempAssemblyPath = System.IO.Path.Combine(
+                    System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFilesX86), PRIMAVERA_COMMON_FILES_FOLDER),
+                    strArgToLoad + ".dll"
+                )
+
+                Exit For
+            End If
+
+        Next
+
+        'Valida nome do assembly
+        If String.IsNullOrEmpty(strTempAssemblyPath) Then
+            outAssembly = Nothing
+        Else
+            outAssembly = Assembly.LoadFrom(strTempAssemblyPath)
+        End If
+
+        Return outAssembly
+
+    End Function
+
 
 
 
